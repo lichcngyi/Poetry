@@ -27,6 +27,12 @@ namespace Poetry.EntityFrameworkCore
         /* Add DbSet properties for your Aggregate Roots / Entities here. */
         public DbSet<PoetryClassify> PoetryClassifys { get; set; }
         public DbSet<PoetryData> PoetryDatas { get; set; }
+
+        public DbSet<Collection> Collections { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Translation> Translations { get; set; }
+        public DbSet<Vote> Votes { get; set; }
+
         #region Entities from the modules
 
         /* Notice: We only implemented IIdentityDbContext and ITenantManagementDbContext
