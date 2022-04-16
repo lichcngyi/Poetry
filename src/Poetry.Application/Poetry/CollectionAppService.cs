@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,8 +18,21 @@ namespace Poetry.Poetry
             PagedAndSortedResultRequestDto, //Used for paging/sorting
             CollectionDto>, ICollectionAppService
     {
-        public CollectionAppService(IRepository<Collection, Guid> repository) : base(repository)
+        public IRepository<PoetryData, Guid> _poetry;
+        public CollectionAppService(IRepository<Collection, Guid> repository, IRepository<PoetryData, Guid> poetry) : base(repository)
         {
+            _poetry = poetry;
+        }
+        [HttpGet]
+        public IActionResult GetCollectionUserName([FromQuery] string UserName)
+        {
+
+            return new JsonResult(Repository.Where(p => p.UserName == UserName).Select(x => new
+            {
+                id=x.Id,
+                userName = x.UserName,
+                poetry = _poetry.First(u=>u.MyId==x.MyId)
+            }).ToList()); ;
         }
     }
 }

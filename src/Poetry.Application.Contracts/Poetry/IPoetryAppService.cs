@@ -16,7 +16,11 @@ namespace Poetry.Poetry
     {
         public IActionResult getPoetryID([FromQuery] string Myid);
         public IActionResult getPoetryPeriod();
+        public IActionResult getPoetryPeriodCx([FromQuery] string Period);
         public IActionResult getPoetryOrder();
-        public IActionResult getPoetrylxMyType([FromQuery] string MyType);
+
+        
+        public IActionResult getPoetryClassMyType([FromQuery] string MyType);
+        
     }
 }

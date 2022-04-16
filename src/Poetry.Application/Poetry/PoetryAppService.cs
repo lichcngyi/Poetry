@@ -25,12 +25,12 @@ namespace Poetry.Poetry
             _repository = repository;
             _poetryClassify=poetryClassify;
         }
-
+        [HttpGet]
         public IActionResult getPoetryID([FromQuery] string Myid)
         {
             return new JsonResult(_repository.Where(p => p.MyId == Myid).ToList());
         }
-
+        [HttpGet]
         public IActionResult getPoetryPeriod()
         {
             return new JsonResult(_repository.GroupBy(p => p.Period).Select(p => new
@@ -38,14 +38,35 @@ namespace Poetry.Poetry
                 Period = p.Key
             }).ToList());
         }
+        [HttpGet]
+        public IActionResult getPoetryPeriodCx([FromQuery] string Period)
+        {
+            return new JsonResult(_repository.Where(p => p.Period == Period).Select(p => new
+            {
+                Title=p.Title,
+                Author=p.Author,
+                Period=Period,
+                MyId=p.MyId
+            }).ToList());
+        }
         public IActionResult getPoetryOrder()
         {
             return new JsonResult(_repository.OrderBy(p => p.CreationTime).Take(20).ToList());
         }
 
-        public IActionResult getPoetrylxMyType([FromQuery] string MyType)
+
+
+        public IActionResult getPoetryClassMyType([FromQuery] string MyType)
         {
-            return new JsonResult(_poetryClassify.Where(p => p.MyType == MyType).ToList());
+            return new JsonResult(_poetryClassify.Where(p => p.MyType == MyType).Select(p=>new
+            {
+                Title = _repository.First(x=>x.MyId==p.MyId).Title,
+                Author = _repository.First(x => x.MyId == p.MyId).Author,
+                Period = _repository.First(x => x.MyId == p.MyId).Period,
+                MyId = _repository.First(x => x.MyId == p.MyId).MyId,
+            }).ToList());
         }
+
+        
     }
 }
