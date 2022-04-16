@@ -20,6 +20,17 @@ namespace Poetry.Poetry
     {
         public CommentAppService(IRepository<Comment, Guid> repository) : base(repository)
         {
+
+
+        }
+
+        public IActionResult getCommentMyid([FromQuery] string Myid)
+        {
+            return new JsonResult( Repository.Where(p=>p.MyId == Myid).ToList());
+        }
+        public IActionResult getCommentId([FromQuery] Guid Id)
+        {
+            return new JsonResult(Repository.Where(p => p.Id == Id).ToList());
         }
     }
 }

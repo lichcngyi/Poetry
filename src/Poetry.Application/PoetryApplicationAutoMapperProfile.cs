@@ -15,6 +15,9 @@ namespace Poetry
 
             CreateMap<Comment, CommentDto>();
             CreateMap<CommentDto, Comment>();
+
+            CreateMap<Collection, CollectionDto>();
+            CreateMap<CollectionDto, Collection>();
         }
     }
 }

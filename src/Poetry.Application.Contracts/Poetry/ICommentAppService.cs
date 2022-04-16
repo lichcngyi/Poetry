@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace Poetry.Poetry
            PagedAndSortedResultRequestDto, //Used for paging/sorting
            CommentDto>
     {
-        
+
+        public IActionResult getCommentMyid([FromQuery] string Myid);
     }
 }
