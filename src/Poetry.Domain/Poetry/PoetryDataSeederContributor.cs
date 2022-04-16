@@ -44,7 +44,7 @@ namespace Poetry.Poetry
                         builder.AddJsonFile(item2.PhysicalPath);
                         var configuration = builder.Build();
 
-
+                        string name = configuration.GetSection($"name").Get<string>();
 
                         if (await _poetryClassifyDataRepository.GetCountAsync() <= 5)
                         {
@@ -58,7 +58,7 @@ namespace Poetry.Poetry
                                 {
                                     break;
                                 }
-                                await _poetryClassifyDataRepository.InsertAsync(new PoetryClassify { MyId = id,MyType= item2.Name.Split('.')[0], Name = title }, autoSave: true);
+                                await _poetryClassifyDataRepository.InsertAsync(new PoetryClassify { MyId = id,MyType= name, Name = title }, autoSave: true);
                             }
                         }
 
@@ -81,8 +81,20 @@ namespace Poetry.Poetry
                                 var author = configuration["author"];
                                 var period = configuration["period"];
                                 var content = configuration["content"];
-                                var list = configuration["list"];
-                                await _poetryDataRepository.InsertAsync(new PoetryData { MyId = id,Title=title,Author=author,Period=period,Content=content,List=list}, autoSave: true);
+
+                                StringBuilder lists = new StringBuilder();
+                                for (int i = 0; true; i++)
+                                {
+                                    var list = configuration[$"list:{i}"];
+                                    if (list == null)
+                                    {
+                                        break;
+                                    }
+                                    lists.Append(list.ToString() + "|");
+                                }
+
+
+                                await _poetryDataRepository.InsertAsync(new PoetryData { MyId = id,Title=title,Author=author,Period=period,Content=content,List= lists.ToString()}, autoSave: true);
 
                             }
                         }

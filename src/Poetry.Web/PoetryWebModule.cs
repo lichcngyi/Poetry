@@ -85,6 +85,16 @@ namespace Poetry.Web
             ConfigureNavigationServices();
             ConfigureAutoApiControllers();
             ConfigureSwaggerServices(context.Services);
+
+
+            context.Services.AddCors(options => options.AddPolicy("cors",
+            builder =>
+            {
+                builder.AllowAnyMethod()
+                    .SetIsOriginAllowed(_ => true)
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            }));
         }
 
         private void ConfigureUrls(IConfiguration configuration)
@@ -199,7 +209,7 @@ namespace Poetry.Web
         {
             var app = context.GetApplicationBuilder();
             var env = context.GetEnvironment();
-
+            app.UseCors("cors");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

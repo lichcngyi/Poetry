@@ -31,11 +31,11 @@ namespace Poetry.Poetry
             return new JsonResult(_repository.Where(p => p.MyId == Myid).ToList());
         }
 
-        public IActionResult getPoetrylx()
+        public IActionResult getPoetryPeriod()
         {
-            return new JsonResult(_poetryClassify.GroupBy(p => p.MyType).Select(p => new
+            return new JsonResult(_repository.GroupBy(p => p.Period).Select(p => new
             {
-                MyType = p.Key
+                Period = p.Key
             }).ToList());
         }
         public IActionResult getPoetryOrder()

@@ -15,7 +15,7 @@ namespace Poetry.Poetry
             PoetryDataDto> 
     {
         public IActionResult getPoetryID([FromQuery] string Myid);
-        public IActionResult getPoetrylx();
+        public IActionResult getPoetryPeriod();
         public IActionResult getPoetryOrder();
         public IActionResult getPoetrylxMyType([FromQuery] string MyType);
     }

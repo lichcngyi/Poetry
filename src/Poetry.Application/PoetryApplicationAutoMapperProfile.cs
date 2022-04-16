@@ -12,6 +12,9 @@ namespace Poetry
              * into multiple profile classes for a better organization. */
             CreateMap<PoetryData, PoetryDataDto>();
             CreateMap<PoetryDataDto, PoetryData>();
+
+            CreateMap<Comment, CommentDto>();
+            CreateMap<CommentDto, Comment>();
         }
     }
 }
