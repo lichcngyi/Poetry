@@ -18,6 +18,10 @@ namespace Poetry
 
             CreateMap<Collection, CollectionDto>();
             CreateMap<CollectionDto, Collection>();
+
+            CreateMap<Translation, TranslationDto>();
+            CreateMap<TranslationDto, Translation>();
+            
         }
     }
 }
