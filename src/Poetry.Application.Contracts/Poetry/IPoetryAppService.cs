@@ -18,8 +18,9 @@ namespace Poetry.Poetry
         public IActionResult getPoetryPeriod();
         public IActionResult getPoetryPeriodCx([FromQuery] string Period);
         public IActionResult getPoetryOrder();
-
-        
+        public IActionResult getPoetrySearch([FromQuery] string Search);
+        public IActionResult getPoetryAuthorAll();
+        public IActionResult getPoetryAuthor([FromQuery] string Author);
         public IActionResult getPoetryClassMyType([FromQuery] string MyType);
         
     }

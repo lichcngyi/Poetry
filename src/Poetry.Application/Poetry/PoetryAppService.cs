@@ -38,6 +38,7 @@ namespace Poetry.Poetry
                 Period = p.Key
             }).ToList());
         }
+        //时期搜索
         [HttpGet]
         public IActionResult getPoetryPeriodCx([FromQuery] string Period)
         {
@@ -46,16 +47,26 @@ namespace Poetry.Poetry
                 Title=p.Title,
                 Author=p.Author,
                 Period=Period,
-                MyId=p.MyId
+                MyId=p.MyId,
+                Content = p.Content,
             }).ToList());
         }
         public IActionResult getPoetryOrder()
         {
-            return new JsonResult(_repository.OrderBy(p => p.CreationTime).Take(20).ToList());
+            return new JsonResult(_repository.OrderByDescending(p => p.CreationTime).Take(20).ToList());
         }
-
-
-
+        //搜索
+        public IActionResult getPoetrySearch([FromQuery] string Search)
+        {
+            List<PoetryData> li=new List<PoetryData>();
+            li.AddRange(_repository.Where(p=>p.Title.Contains(Search)).ToList());
+            li.AddRange(_repository.Where(p => p.Author.Contains(Search)).ToList());
+            li.AddRange(_repository.Where(p => p.Period.Contains(Search)).ToList());
+            li.AddRange(_repository.Where(p => p.Content.Contains(Search)).ToList());
+            return new JsonResult(li);
+        }
+        
+        //类型搜索
         public IActionResult getPoetryClassMyType([FromQuery] string MyType)
         {
             return new JsonResult(_poetryClassify.Where(p => p.MyType == MyType).Select(p=>new
@@ -64,9 +75,34 @@ namespace Poetry.Poetry
                 Author = _repository.First(x => x.MyId == p.MyId).Author,
                 Period = _repository.First(x => x.MyId == p.MyId).Period,
                 MyId = _repository.First(x => x.MyId == p.MyId).MyId,
+                Content = _repository.First(x => x.MyId == p.MyId).Content,
             }).ToList());
         }
 
-        
+        //作者全部
+        public IActionResult getPoetryAuthorAll()
+        {
+
+            return new JsonResult(_repository.GroupBy(p => p.Author).Select(p => new
+            {
+                Author = p.Key,
+                Count= _repository.Where(x=>x.Author== p.Key).Count(),
+            }).OrderByDescending(p=>p.Count).ToList());
+        }
+        //作者诗词信息
+        public IActionResult getPoetryAuthor([FromQuery] string Author)
+        {
+
+
+            return new JsonResult(_repository.Where(p=>p.Author== Author).Select(p => new
+            {
+                Title = p.Title,
+                Author = p.Author,
+                Period = p.Period,
+                MyId = p.MyId,
+                Content = p.Content,
+            }).ToList());
+        }
+
     }
 }
