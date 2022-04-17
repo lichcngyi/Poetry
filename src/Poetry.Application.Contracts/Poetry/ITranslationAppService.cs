@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Volo.Abp.Application.Dtos;
@@ -12,5 +13,6 @@ namespace Poetry.Poetry
            PagedAndSortedResultRequestDto, //Used for paging/sorting
            TranslationDto>
     {
+        public IActionResult getTranslationMyid([FromQuery] string Myid);
     }
 }

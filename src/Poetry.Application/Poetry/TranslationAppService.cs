@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,8 +18,40 @@ namespace Poetry.Poetry
             PagedAndSortedResultRequestDto, //Used for paging/sorting
             TranslationDto>, ITranslationAppService
     {
-        public TranslationAppService(IRepository<Translation, Guid> repository) : base(repository)
+        IRepository<Vote, Guid> _votes;
+        public TranslationAppService(IRepository<Translation, Guid> repository, IRepository<Vote, Guid> votes) : base(repository)
         {
+            _votes = votes;
         }
+
+        [HttpGet]
+        public IActionResult getTranslationMyid([FromQuery] string Myid)
+        {
+            var arr = Repository.Where(p => p.MyId == Myid && p.Valid == 1).Select(p => new
+            {
+                Id=p.Id,
+                MyId = p.MyId,
+                RelatedTranslation = p.RelatedTranslation,
+                CreationTime = p.CreationTime,
+                Grade = _votes.Where(x => x.TranslationID == p.Id).Sum(u => u.Grade),
+            }).OrderByDescending(p => p.CreationTime).Take(5).ToList();
+
+            var arr2 = Repository.Where(p => p.MyId == Myid && p.Valid == 1).Select(p => new
+            {
+                Id = p.Id,
+                MyId = p.MyId,
+                RelatedTranslation = p.RelatedTranslation,
+                CreationTime = p.CreationTime,
+                Grade = _votes.Where(x => x.TranslationID == p.Id).Sum(u => u.Grade),
+            }).OrderByDescending(p => p.Grade).Take(5).ToList();
+
+            arr2.AddRange(arr);
+            return new JsonResult(arr2);
+        }
+
+
+
+
+
     }
 }
