@@ -21,6 +21,9 @@ namespace Poetry
 
             CreateMap<Translation, TranslationDto>();
             CreateMap<TranslationDto, Translation>();
+
+            CreateMap<Vote, VoteDto>();
+            CreateMap<VoteDto, Vote>();
             
         }
     }
